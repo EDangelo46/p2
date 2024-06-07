@@ -30,13 +30,19 @@ public class LoginServlet extends HttpServlet {
 		
 		try
 		{	    
-
+			
+			String rawPassword = request.getParameter("pw");
+			String hashedPassword = BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+			
 		     UserBean user = new UserBean();
 		     user.setUsername(request.getParameter("un"));
-		     user.setPassword(request.getParameter("pw"));
-		     user = usDao.doRetrieve(request.getParameter("un"),request.getParameter("pw"));
-			   		    
-		    
+		     user.setPassword(hashedPassword);
+		     user = usDao.doRetrieve(request.getParameter("un"));
+		     String enteredPassword = request.getParameter("pw");
+		     
+		     if (user != null && BCrypt.checkpw(enteredPassword, user.getPassword()));
+		     else;
+		     
 		     String checkout = request.getParameter("checkout");
 		     
 		     if (user.isValid())
